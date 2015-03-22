@@ -13,6 +13,8 @@ PKG_SOURCE_SUBDIR:=$(PKG_NAME)-$(PKG_SOURCE_VERSION)
 
 include $(INCLUDE_DIR)/package.mk
 
+PKG_BUILD_DIR:=$(PKG_BUILD_DIR)/../$(PKG_NAME)-$(PKG_SOURCE_VERSION)
+
 define Package/cjdns
 	SECTION:=net
 	CATEGORY:=Network
@@ -21,7 +23,7 @@ define Package/cjdns
 	URL:=https://github.com/hyperboria/cjdns
 	MAINTAINER:=Lars Gierth <larsg@systemli.org>
 	DEPENDS:=+kmod-tun +kmod-ipv6 \
-		+libnl-tiny +libpthread +librt +KERNEL_SECCOMP:libseccomp \
+		+libnl-tiny +libpthread +librt \
 		+SSP_SUPPORT:libssp +libuci-lua +lua-bencode +dkjson \
 		+luasocket +lua-sha2
 endef
@@ -36,7 +38,7 @@ endef
 define Build/Configure
 endef
 
-ifneq ($(CONFIG_KERNEL_SECCOMP),y)
+ifneq ($(CONFIG_KERNEL_SECCOMP_FILTER),y)
 PKG_DO_VARS:=Seccomp_NO=1
 endif
 
